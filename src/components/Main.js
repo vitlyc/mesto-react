@@ -6,19 +6,18 @@ import Card from './Card'
 function Main(props) {
 
 
-    const [userInfo, setUserInfo] = React.useState({ userName: '', userAbout: '', userAvatar: '' });
+    const [userName, setUserName] = React.useState();
+    const [userAbout, setUserAbout] = React.useState();
+    const [userAvatar, setUserAvatar] = React.useState();
     const [cards, setCards] = React.useState([]);
     
     React.useEffect(() => {
         Promise.all([api.getUserInfo(), api.getInitialCards()])
             .then(([userData, initialCards]) => {
-                setUserInfo({
-                    userName: userData.name,
-                    userAbout: userData.about,
-                    userAvatar: userData.avatar,
-                });
+                setUserName(userData.name);
+                setUserAbout(userData.about);
+                setUserAvatar(userData.avatar);
                 setCards(initialCards);
-                // console.log(initialCards);
             })
 
             .catch((err) => {
@@ -31,13 +30,13 @@ function Main(props) {
         <main>
             <section className="profile">
                 <div className="profile__avatar-container">
-                    <img src={userInfo.userAvatar} className="profile__avatar" alt="Кусто" />
+                    <img src={userAvatar} className="profile__avatar" alt="Кусто" />
                     <button className="profile__edit-avatar" type="button" onClick={props.isEditAvatarPopupOpen}></button>
                 </div>
                 <div className="profile__info">
-                    <h1 className="profile__title">{userInfo.userName}</h1>
+                    <h1 className="profile__title">{userName}</h1>
                     <button className="profile__edit-button" type="button" onClick={props.isEditProfilePopupOpen}></button>
-                    <p className="profile__subtitle">{userInfo.userAbout}</p>
+                    <p className="profile__subtitle">{userAbout}</p>
                 </div>
                 <button className="profile__add-button" type="button" onClick={props.isAddPlacePopupOpen}></button>
             </section>

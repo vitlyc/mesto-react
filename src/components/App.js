@@ -1,3 +1,6 @@
+// serve - s build
+// npm start
+
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
