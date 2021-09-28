@@ -4,15 +4,17 @@ import api from "../utils/Api";
 import Card from './Card'
 
 function Main(props) {
-    const [userInfo, setUserInfo] = React.useState({ userName: "", userDescription: "", userAvatar: "" });
+
+
+    const [userInfo, setUserInfo] = React.useState({ userName: '', userAbout: '', userAvatar: '' });
     const [cards, setCards] = React.useState([]);
-    // console.log(props);
+    
     React.useEffect(() => {
         Promise.all([api.getUserInfo(), api.getInitialCards()])
             .then(([userData, initialCards]) => {
                 setUserInfo({
                     userName: userData.name,
-                    userDescription: userData.about,
+                    userAbout: userData.about,
                     userAvatar: userData.avatar,
                 });
                 setCards(initialCards);
@@ -35,7 +37,7 @@ function Main(props) {
                 <div className="profile__info">
                     <h1 className="profile__title">{userInfo.userName}</h1>
                     <button className="profile__edit-button" type="button" onClick={props.isEditProfilePopupOpen}></button>
-                    <p className="profile__subtitle">{userInfo.userDescription}</p>
+                    <p className="profile__subtitle">{userInfo.userAbout}</p>
                 </div>
                 <button className="profile__add-button" type="button" onClick={props.isAddPlacePopupOpen}></button>
             </section>
