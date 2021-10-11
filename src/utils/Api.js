@@ -19,14 +19,11 @@
              })
              .then(this._checkStatusOK);
      }
-     setUserInfo(name, job) {
+     updateUserInfo(user) {
          return fetch(`${this._baseUrl}/users/me`, {
                  method: "PATCH",
                  headers: this._headers,
-                 body: JSON.stringify({
-                     name: name,
-                     about: job
-                 })
+                 body: JSON.stringify(user)
              })
              .then(this._checkStatusOK);
      }
@@ -56,7 +53,7 @@
              })
              .then(this._checkStatusOK);
      }
-     createNewCard(name, link) {
+     createNewCard({ name, link }) {
          return fetch(`${this._baseUrl}/cards`, {
                  method: "POST",
                  headers: this._headers,
