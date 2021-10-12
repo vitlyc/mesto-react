@@ -7,12 +7,13 @@ function AddPlacePopup(props) {
     const linkPlaceRef = useRef();
 
     function handleSubmit(e) {
-        
         e.preventDefault();
         props.onAddPlace({
             link: linkPlaceRef.current.value,
             name: namePlaceRef.current.value,
         });
+        namePlaceRef.current.value = ''
+        linkPlaceRef.current.value = ''
     }
 
     return ((

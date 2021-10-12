@@ -43,7 +43,7 @@ function App(props) {
         setIsImagePopupOpen(false);
     };
    
-    const [userInfo, setUserInfo] = React.useState('');
+    const [userInfo, setUserInfo] = React.useState({});
     const [cards, setCards] = React.useState([]);
     // console.log(userInfo);
     React.useEffect(() => {
@@ -63,21 +63,43 @@ function App(props) {
             });
     }, []);
 
+    React.useEffect(() => {
+        const closeByEscape = (e) => {
+            if (e.key === 'Escape') {
+                closeAllPopups();
+            }
+        }
+
+        document.addEventListener('keydown', closeByEscape)
+
+        return () => document.removeEventListener('keydown', closeByEscape)
+    }, [])
+
+
 
     function handleCardLike(card) {
         // console.log('hi');
         const isLiked = card.likes.some((i) => i._id === userInfo.userId);
 
-        api.likeCard(card._id, isLiked).then((newCard) => {
+        api.likeCard(card._id, isLiked)
+        .then((newCard) => {
             setCards((cards) => cards.map((c) => (c._id === card._id ? newCard : c)));
+        })
+        .catch((err) => {
+                console.log(err);
         });
+        
     };
 
     function handleCardDelete(card) {
         api.deleteCard(card._id)
         .then(() => {
             setCards((cards) => cards.filter((c) => c._id !== card._id));
+        })
+        .catch((err) => {
+                console.log(err);
         });
+        
     };
 
     function handleUpdateUser(userData) {
@@ -116,7 +138,6 @@ function App(props) {
     };
 
     function handleAddPlace(placeData) {
-        console.log(placeData);
         api.createNewCard(placeData)
             .then((newCard) => {
                 setCards([newCard, ...cards]);
